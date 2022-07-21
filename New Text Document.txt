@@ -1,0 +1,92 @@
+import numpy as np
+from numpy import *
+import random
+import math
+from scipy.optimize import *
+import statistics
+x1, y1, z1 = input("Coordinates of the first position of sensor: ").split()
+x1=float(x1)
+print("x1= ",x1)
+y1=float(y1)
+print("y1= ",y1)
+z1=float(z1)
+print("z1= ",z1)
+x2, y2, z2 = input("Coordinates of the second position of sensor: ").split()
+x2=float(x2)
+print("x2= ",x2)
+y2=float(y2)
+print("y2= ",y2)
+z2=float(z2)
+print("z2= ",z2)
+x3, y3, z3 = input("Coordinates of the beacon node: ").split()
+x3=float(x3)
+print("x3= ",x3)
+y3=float(y3)
+print("y3= ",y3)
+z3=float(z3)
+print("z3= ",z3)
+sample=[]
+for i in range(0,99):
+    p=random.uniform(0.00,0.005)
+    sample.append(p)
+s=statistics.stdev(sample)
+D1=(((x1-x3)**2)+((y1-y3)**2)+((z1-z3)**2))**0.5+s
+print("D1=",D1)
+sample=[]
+for i in range(0,99):
+    p=random.uniform(0.00,0.005)
+    sample.append(p)
+s=statistics.stdev(sample)
+D2=(((x2-x3)**2)+((y2-y3)**2)+((z2-z3)**2))**0.5+s
+print("D2=",D2)
+D22=((D2**2)-(z2**2)+(z1**2))**0.5
+print("D22=",D22)
+C=(((x2-x1)**2)+((y2-y1)**2)+((z2-z1)**2))**0.5
+print("C=",C)
+A=((D1**2)-(z1**2))**0.5
+print("A=",A)
+B=((D22**2)-(z1**2))**0.5
+print("B=",B)
+C1=((C**2)-((z2-z1)**2))**0.5
+print("C1=",C1)
+O1=math.asin((y2-y1)/C1)
+O1=O1*180/math.pi
+print("O1=",O1)
+if x2>x1 and y1>y2:
+    O1=360+O1
+elif x1>x2 and y1>y2:
+    O1=180-O1
+elif x1>x2 and y2>y1:
+    O1=180-O1
+elif x2>x1 and y2>y1:
+    O1=360+O1
+print("O1=",O1)
+O2=math.acos(((A**2)+(C1**2)-(B**2))/(2*A*C1))
+print("O2=",O2)
+O2=O2*180/math.pi
+print("O2=",O2)
+O3=O1+O2
+print("O3=",O3)
+O4=O3-180
+print("O4=",O4)
+O4=O4*math.pi/180
+X1=A*math.cos(O4)
+Y1=A*math.sin(O4)
+O1=O1*math.pi/180
+X2=X1+(C1*math.cos(O1))
+Y2=Y1+(C1*math.sin(O1))
+D222=((X2**2)+(Y2**2)+(z1**2))**0.5
+print("X1=",X1)
+print("Y1=",Y1)
+print("X2=",X2)
+print("Y2=",Y2)
+print("D222=",D222)
+l1=((x1-X1)**2+(y1-Y1)**2+z1**2)**0.5
+l2=((x1-X2)**2+(y1-Y2)**2+z2**2)**0.5
+O6=math.acos(((l1**2)+(C**2)-(l2**2))/(2*l1*C))
+O6=O6*180/math.pi
+print("O6=",O6)
+O7=math.acos(C1/C)
+O7=O7*180/math.pi+90
+print("O7=",O7)
+ 
